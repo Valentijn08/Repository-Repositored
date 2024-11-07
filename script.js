@@ -37,6 +37,10 @@ class Bom {
   beweeg() {
     this.y += this.stapGrootte * this.direction;
 
+    if (this.y <= 0 || this.y >= canvas.height - raster.celGrootte) {
+      this.toggleDirection();
+    }
+
     this.y = constrain(this.y, 0, canvas.height - raster.celGrootte);
   }
   toggleDirection() {
@@ -184,7 +188,9 @@ function setup() {
   for (var i = 0; i < bomPosities.length; i++) {
     var bomX = bomPosities[i].x * raster.celGrootte;
     var bomY = bomPosities[i].y * raster.celGrootte;
-    bommen.push(new Bom(bomX, bomY));
+
+    var willekeurigeStapGrootte = random(1, 3) * raster.celGrootte / 5;
+    bommen.push(new Bom(bomX, bomY, willekeurigeStapGrootte));
   }
 
   eve = new Jos();
@@ -230,6 +236,7 @@ function draw() {
   groeneAppel.toon();
 
   for (var i = 0; i < bommen.length; i++) {
+    bommen[i].beweeg();
     bommen[i].toon();
 
     console.log("Toon Eve, Alice en Bob");
